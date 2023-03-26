@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import useLocalStorage from './hooks/useLocalStorage';
 import PageNotFound from './pages/PageNotFound';
 import AddNote from './pages/AddNote';
+import HomePage from './pages/HomePage';
 import { NoteData, RawNote, Tag } from '.';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,7 +30,7 @@ const App = () => {
 
     return (
         <Routes>
-            <Route path='/' element={<h1>Notes</h1>} />
+            <Route path='/' element={<HomePage availableTags={tags} notes={notesWithTags} />} />
             <Route path='/note' element={<AddNote onSubmit={createNote} onAddTag={createTag} availableTags={tags} />} />
             <Route path='/:id'>
                 <Route index element={<h1>note id_</h1>} />
