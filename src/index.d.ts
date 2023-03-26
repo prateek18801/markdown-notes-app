@@ -23,6 +23,12 @@ export type RawNote = {
     id: string
 } & RawNoteData
 
+export type SimplifiedNote = {
+    id: string,
+    title: string,
+    tags: Tag[]
+}
+
 export type NoteFormProps = {
     onSubmit: (data: NoteData) => void,
     onAddTag: (data: Tag) => void,
@@ -40,8 +46,7 @@ export type NoteListProps = {
     notes: Note[]
 }
 
-export type SimplifiedNote = {
-    id: string,
-    title: string,
-    tags: Tag[]
+export type NoteLayoutProps = {
+    notes: Note[]
 }
+
