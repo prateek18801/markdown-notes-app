@@ -3,8 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import useLocalStorage from './hooks/useLocalStorage';
 import PageNotFound from './pages/PageNotFound';
-import AddNote from './pages/AddNote';
 import HomePage from './pages/HomePage';
+import Note from './pages/Note';
+import AddNote from './pages/AddNote';
+import EditNote from './pages/EditNote';
+import NoteLayout from './components/NoteLayout';
 import { NoteData, RawNote, Tag } from '.';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,6 +27,15 @@ const App = () => {
         });
     }
 
+    const updateNote = (id: string, {tags, ...data}: NoteData) => {
+        setNotes((savedNotes => {
+            return savedNotes.map(note => {
+                if(note.id === id) return {...note, ...data, tagIds: tags.map(tag => tag.id)};
+                return note;
+            });
+        }));
+    }
+
     const createTag = (tag: Tag) => {
         setTags(tags => [...tags, tag]);
     }
@@ -32,9 +44,9 @@ const App = () => {
         <Routes>
             <Route path='/' element={<HomePage availableTags={tags} notes={notesWithTags} />} />
             <Route path='/note' element={<AddNote onSubmit={createNote} onAddTag={createTag} availableTags={tags} />} />
-            <Route path='/:id'>
-                <Route index element={<h1>note id_</h1>} />
-                <Route path='edit' element={<h1>Edit note id_</h1>} />
+            <Route path='/:id' element={<NoteLayout notes={notesWithTags} />}>
+                <Route index element={<Note />} />
+                <Route path='edit' element={<EditNote onSubmit={updateNote} onAddTag={createTag} availableTags={tags} />} />
                 <Route path='delete' element={<h1>Delete note id_</h1>} />
             </Route>
             <Route path='*' element={<PageNotFound />} />
