@@ -41,6 +41,12 @@ export type AddNoteProps = {
     availableTags: Tag[]
 }
 
+export type EditNoteProps = {
+    onSubmit: (id: string, data: NoteData) => void,
+    onAddTag: (data: Tag) => void,
+    availableTags: Tag[]
+}
+
 export type NoteListProps = {
     availableTags: Tag[],
     notes: Note[]
