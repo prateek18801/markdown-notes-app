@@ -34,3 +34,14 @@ export type AddNoteProps = {
     onAddTag: (data: Tag) => void,
     availableTags: Tag[]
 }
+
+export type NoteListProps = {
+    availableTags: Tag[],
+    notes: Note[]
+}
+
+export type SimplifiedNote = {
+    id: string,
+    title: string,
+    tags: Tag[]
+}
