@@ -27,25 +27,46 @@ const App = () => {
         });
     }
 
-    const updateNote = (id: string, {tags, ...data}: NoteData) => {
+    const updateNote = (id: string, { tags, ...data }: NoteData) => {
         setNotes((savedNotes => {
             return savedNotes.map(note => {
-                if(note.id === id) return {...note, ...data, tagIds: tags.map(tag => tag.id)};
+                if (note.id === id) return { ...note, ...data, tagIds: tags.map(tag => tag.id) };
                 return note;
             });
         }));
+    }
+
+    const deleteNote = (id: string) => {
+        setNotes(savedNotes => {
+            return savedNotes.filter(note => note.id !== id);
+        });
     }
 
     const createTag = (tag: Tag) => {
         setTags(tags => [...tags, tag]);
     }
 
+    const updateTag = (id: string, label: string) => {
+        setTags(savedTags => {
+            return savedTags.map(tag => {
+                if (tag.id === id) return { ...tag, label };
+                return tag;
+            });
+        });
+    }
+
+    const deleteTag = (id: string) => {
+        setTags(savedTags => {
+            return savedTags.filter(tag => tag.id !== id);
+        });
+    }
+
     return (
         <Routes>
-            <Route path='/' element={<HomePage availableTags={tags} notes={notesWithTags} />} />
+            <Route path='/' element={<HomePage availableTags={tags} notes={notesWithTags} onUpdateTag={updateTag} onDeleteTag={deleteTag} />} />
             <Route path='/note' element={<AddNote onSubmit={createNote} onAddTag={createTag} availableTags={tags} />} />
             <Route path='/:id' element={<NoteLayout notes={notesWithTags} />}>
-                <Route index element={<Note />} />
+                <Route index element={<Note onDelete={deleteNote} />} />
                 <Route path='edit' element={<EditNote onSubmit={updateNote} onAddTag={createTag} availableTags={tags} />} />
                 <Route path='delete' element={<h1>Delete note id_</h1>} />
             </Route>
