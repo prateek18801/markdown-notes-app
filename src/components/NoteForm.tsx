@@ -5,11 +5,11 @@ import { Form, Row, Col, Button, Stack } from 'react-bootstrap';
 import CreateableReactSelect from 'react-select/creatable';
 import { NoteFormProps, Tag } from '..';
 
-const NoteForm = ({ onSubmit, onAddTag, availableTags }: NoteFormProps) => {
+const NoteForm = ({ onSubmit, onAddTag, availableTags, title = '', markdown = '', tags = [] }: NoteFormProps) => {
     const navigate = useNavigate();
     const titleRef = useRef<HTMLInputElement>(null);
     const markdownRef = useRef<HTMLTextAreaElement>(null);
-    const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+    const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
@@ -28,7 +28,7 @@ const NoteForm = ({ onSubmit, onAddTag, availableTags }: NoteFormProps) => {
                     <Col>
                         <Form.Group>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control ref={titleRef} required />
+                            <Form.Control ref={titleRef} defaultValue={title} required />
                         </Form.Group>
                     </Col>
                     <Col>
@@ -50,7 +50,7 @@ const NoteForm = ({ onSubmit, onAddTag, availableTags }: NoteFormProps) => {
                 </Row>
                 <Form.Group>
                     <Form.Label>Content</Form.Label>
-                    <Form.Control as='textarea' rows={15} ref={markdownRef} required />
+                    <Form.Control as='textarea' rows={15} ref={markdownRef} defaultValue={markdown} required />
                 </Form.Group>
                 <Stack direction='horizontal' gap={2} className='justify-content-end'>
                     <Button variant='success' type='submit'>Save</Button>
