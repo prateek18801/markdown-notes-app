@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Button, Form, Col, Container, Row, Stack } from 'react-bootstrap';
 import ReactSelect from 'react-select';
 import NoteCard from '../components/NoteCard';
+import EditTagsModal from '../components/EditTagsModal';
 import { NoteListProps, Tag } from '..';
 
-const HomePage = ({ availableTags, notes }: NoteListProps) => {
+const HomePage = ({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListProps) => {
 
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
     const [title, setTitle] = useState<string>('');
+    const [editTagsModalIsOpen, setEditTagsModalIsOpen] = useState(false);
 
     const filteredNotes = useMemo(() => {
         return notes.filter(note => (title === '' || note.title.toLocaleLowerCase().includes(title.toLocaleLowerCase())) && (selectedTags.length === 0 || selectedTags.every(tag => note.tags.some(t => t.id === tag.id))));
@@ -21,7 +23,7 @@ const HomePage = ({ availableTags, notes }: NoteListProps) => {
                 <Col xs='auto'>
                     <Stack gap={2} direction='horizontal'>
                         <Link to='/note'><Button variant='success'>Create</Button></Link>
-                        <Button variant='secondary'>Edit Tags</Button>
+                        <Button variant='secondary' onClick={() => setEditTagsModalIsOpen(true)}>Edit Tags</Button>
                     </Stack>
                 </Col>
             </Row>
@@ -53,6 +55,13 @@ const HomePage = ({ availableTags, notes }: NoteListProps) => {
                     </Col>
                 ))}
             </Row>
+            <EditTagsModal
+                show={editTagsModalIsOpen}
+                availableTags={availableTags}
+                onUpdateTag={onUpdateTag}
+                onDeleteTag={onDeleteTag}
+                handleClose={() => setEditTagsModalIsOpen(prevState => !prevState)}
+            />
         </Container>
     );
 }
