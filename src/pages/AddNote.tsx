@@ -4,7 +4,7 @@ import { AddNoteProps } from '..';
 
 const AddNote = ({ onSubmit, onAddTag, availableTags }: AddNoteProps) => {
     return (
-        <Container>
+        <Container className='my-3'>
             <h1>Add Note</h1>
             <NoteForm onSubmit={onSubmit} onAddTag={onAddTag} availableTags={availableTags} />
         </Container>
